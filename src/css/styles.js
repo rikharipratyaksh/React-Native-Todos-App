@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: width,
-    paddingBottom: 10,
     position: 'absolute',
     bottom: 0,
     borderTopWidth: 0.5,
@@ -61,7 +60,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     color: theme.fontColor,
-    width: '80%',
+    width: '70%',
   },
 
   //    No todos text

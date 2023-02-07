@@ -29,7 +29,7 @@ class Input extends React.Component {
           style={[styles.textInput]}
           onChangeText={text => this.setState({text})}
           value={this.state.text}
-          placeholder="Insert your text!"
+          placeholder="Let's add some tasks!"
           placeholderTextColor="gray"
         />
         <TouchableOpacity

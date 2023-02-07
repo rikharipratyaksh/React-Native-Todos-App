@@ -11,11 +11,9 @@ import {
 import {styles} from '../css/styles';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Animated, {
-  FadeInDown,
-  Layout,
-} from 'react-native-reanimated';
+import Animated, {FadeInDown, Layout} from 'react-native-reanimated';
 import Input from './input.js';
+import Item from './todo_items.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Todos extends React.Component {
@@ -44,6 +42,17 @@ class Todos extends React.Component {
     });
     AsyncStorage.setItem('todos', JSON.stringify(data));
   };
+
+  pinItem = (id, index) => {
+    console.log('id >> ', id, 'index >> ', index);
+    let data = this.state.data;
+    data[index].pinned = !data[index].pinned;
+    this.setState({
+      data: data,
+    });
+    AsyncStorage.setItem('todos', JSON.stringify(data));
+  };
+
   onDelete = (id, index) => {
     let data = this.state.data;
     // data.pop();
@@ -60,6 +69,7 @@ class Todos extends React.Component {
       id: data.length + 1,
       title: text,
       status: false,
+      pinned: false,
     };
     data.push(obj);
     this.setState({
@@ -78,6 +88,8 @@ class Todos extends React.Component {
                 title={item.title}
                 status={item.status}
                 index={index}
+                pinned={item.pinned}
+                pinItem={() => this.pinItem(item, index)}
                 onStatusChange={() => this.statusChange(item, index)}
                 onDelete={() => this.onDelete(item, index)}
               />
@@ -98,31 +110,3 @@ class Todos extends React.Component {
 }
 
 export default Todos;
-
-class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return (
-      <Animated.View
-        entering={FadeInDown.delay(this.props.index * 100)}
-        layout={Layout.springify()}
-        style={[
-          styles.item,
-          {backgroundColor: this.props.status ? '#B5CBBB' : '#dadada'},
-        ]}>
-        <CheckBox
-          value={this.props.status}
-          onValueChange={() => this.props.onStatusChange()}
-          style={styles.checkbox}
-        />
-        <Text style={styles.title}>{this.props.title}</Text>
-        <TouchableOpacity onPress={() => this.props.onDelete()}>
-          <Icon style={styles.sendIcon} name="trash" size={20} color="#900" />
-        </TouchableOpacity>
-      </Animated.View>
-    );
-  }
-}
